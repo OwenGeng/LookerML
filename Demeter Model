@@ -1,0 +1,72 @@
+connection: "docs_bigquery_db_v2"
+# Creator/Owner: owen.geng@moloco.com
+# Created on: 20240814
+# Description / Purpose: This explore is for merging the dataai category with advertisers and publishers.
+# Intended Use: Public
+# Internal/External: Internal
+# Last edited by: owen.geng@moloco.com
+# Last edited on: 20240827
+
+include: "/001.Common/015.Athena/**/*.view.lkml" # include all views in Athena folder
+include: "/001.Common/002.Materialized_Views/*.view.lkml"
+include:"/001.Common/013.ETC(App,Campaign)/*.view.lkml"
+include:"/001.Common/005.Campaign_Raw/campaign_raw_all.view.lkml"
+include:"/001.Common/017.Demeter/*.view.lkml"
+include:"/001.Common/009.Prod_Stream/*.view.lkml"
+include:"/027.Standard_Digest/*.view.lkml"
+
+
+# # =========================== PDT Datagroup ===========================
+
+
+# datagroup: daily_datagroup {
+#   sql_trigger: SELECT EXTRACT(DAY FROM TIMESTAMP_SUB(CURRENT_TIMESTAMP, INTERVAL 40 MINUTE)) ;;
+#   max_cache_age: "24 hour"
+# }
+
+persist_for: "48 hours"
+
+# =========================== Explores ===========================
+
+
+explore: prod_stream_cv_summary{
+  always_filter: {
+    filters: [prod_stream_cv_summary.timestamp_date: "7 days"]
+  }
+  label: "low_quality_pubs"
+  description: "This explore is to check the low registration, high rejected rate publishers"
+}
+
+explore:campaign_raw_metrics{
+  join:dim1_app{
+    sql_on: ${campaign_raw_metrics.app_bundle}=${dim1_app.app_market_bundle} ;;
+    type: left_outer
+  }
+  always_filter: {
+    filters: [local_date: "7 days"]
+  }
+  fields: [ALL_FIELDS*, -campaign_raw_metrics.date_filter,-campaign_raw_metrics.is_top_10_category_content]
+
+  label: "dataai_publisher_metrics"
+  description: "This explore is to join dataai data with pulishers and campaign summary metrics"
+}
+
+# explore:campaign_raw_all {
+#   join: dim1_app{
+#     sql_on: ${campaign_raw_all.app_bundle}=${dim1_app.app_market_bundle} ;;
+#     type: left_outer
+#   }
+#   always_filter: {
+#     filters: [local_date: "7 days"]
+#   }
+#   fields: [ALL_FIELDS*,
+#     -campaign_raw_all.report_group,
+#     -campaign_raw_all.report_tag,
+#     -campaign_raw_all.tag_id,
+#     -campaign_raw_all.model_name,
+#     -campaign_raw_all.model_context_name,
+#     -campaign_raw_all.wrapper_name]
+#   label: "campaign_raw_all"
+#   description: "This explore is to join publishers bundle with clients product bundle  "
+
+  # }
