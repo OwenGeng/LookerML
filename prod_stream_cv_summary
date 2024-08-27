@@ -1,0 +1,695 @@
+view: prod_stream_cv_summary {
+# Creator/Owner: owen.geng@moloco.com
+# Created on: 20240826
+# Description / Purpose: This view is for adding mroe flexible measure such as rejected rate and registration rate.
+# Intended Use: Public
+# Internal/External: Internal
+# Last edited by: owen.geng@moloco.com
+# Last edited on: 20240827
+  
+  
+  
+  sql_table_name: `focal-elf-631.prod_stream_view.cv` ;;
+
+  dimension_group: timestamp {
+    group_label: "Timeframe"
+    type: time
+    timeframes: [
+      hour,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.timestamp ;;
+  }
+
+
+#=================== API ===================
+  dimension: api_platform_id {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.platform.id;;
+  }
+  dimension: api_platform_title {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.platform.title;;
+  }
+  dimension: api_advertiser_id {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.advertiser.id;;
+  }
+  dimension: api_advertiser_title {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.advertiser.title;;
+  }
+  dimension: api_product_id {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.product.id;;
+  }
+  dimension: api_product_title {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.product.title;;
+  }
+  dimension: api_campaign_id {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.campaign.id;;
+  }
+  dimension: api_campaign_title {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.campaign.title;;
+  }
+  dimension: api_campaign_skadn_id {
+    group_label: "API"
+    type: number
+    sql: ${TABLE}.api.campaign.skadn_id;;
+  }
+  dimension: api_trgroup_id {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.trgroup.id;;
+  }
+  dimension: api_trgroup_title {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.trgroup.title;;
+  }
+
+  dimension: api_tracking_links {
+    hidden: yes
+    sql: ${TABLE}.api.tracking_links ;;
+    group_label: "API"
+    group_item_label: "Tracking Links"
+  }
+
+  dimension: api_trgroup_user_bucket {
+    group_label: "API"
+    type: number
+    sql: ${TABLE}.api.trgroup.user_bucket;;
+  }
+  dimension: api_adgroup_id {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.adgroup.id;;
+  }
+  dimension: api_adgroup_title {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.adgroup.title;;
+  }
+  dimension: api_crgroup_id {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.crgroup.id;;
+  }
+  dimension: api_crgroup_title {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.crgroup.title;;
+  }
+  dimension: api_creative_crid {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.creative.crid;;
+  }
+  dimension: api_creative_id {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.creative.id;;
+  }
+  dimension: api_creative_format {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.creative.format;;
+  }
+  dimension: api_creative_cr_format {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.creative.cr_format;;
+  }
+  dimension: api_creative_title {
+    group_label: "API"
+    type: string
+    sql: ${TABLE}.api.creative.title;;
+  }
+  dimension: api_creative_w {
+    group_label: "API"
+    type: number
+    sql: ${TABLE}.api.creative.w;;
+  }
+  dimension: api_creative_h {
+    group_label: "API"
+    type: number
+    sql: ${TABLE}.api.creative.h;;
+  }
+  dimension: api_creative_size_in_bytes {
+    group_label: "API"
+    type: number
+    sql: ${TABLE}.api.creative.size_in_bytes;;
+  }
+  dimension: api_creative_video_duration_sec {
+    group_label: "API"
+    type: number
+    sql: ${TABLE}.api.creative.video_duration_sec;;
+  }
+
+  #=================== IMP ===================
+  dimension: imp_received_at {
+    group_label: "Imp"
+    type: date
+    sql: ${TABLE}.imp.received_at;;
+  }
+  dimension: imp_handled_at {
+    group_label: "Imp"
+    type: date
+    sql: ${TABLE}.imp.handled_at;;
+  }
+  dimension: imp_happened_at {
+    group_label: "Imp"
+    type: date
+    sql: ${TABLE}.imp.happened_at;;
+  }
+  dimension: imp_client_ip {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.imp.client_ip;;
+  }
+  dimension: imp_win_price_usd_currency {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.imp.win_price_usd.currency;;
+  }
+  measure: imp_win_price_usd_amount_micro {
+    group_label: "Imp"
+    type: sum
+    sql: ${TABLE}.imp.win_price_usd.amount_micro;;
+  }
+  measure: imp_win_price_usd {
+    group_label: "Imp"
+    type: sum
+    sql: ${TABLE}.imp.win_price_usd.amount_micro/1000000;;
+    value_format_name: usd_0
+  }
+  dimension: imp_win_price_adv_currency {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.imp.win_price_adv.currency;;
+  }
+  measure: imp_win_price_adv_amount_micro {
+    group_label: "Imp"
+    type: sum
+    sql: ${TABLE}.imp.win_price_adv.amount_micro;;
+  }
+  dimension: imp_win_price_exc_currency {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.imp.win_price_exc.currency;;
+  }
+  measure: imp_win_price_exc_amount_micro {
+    group_label: "Imp"
+    type: sum
+    sql: ${TABLE}.imp.win_price_exc.amount_micro;;
+  }
+  dimension: imp_client_ua {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.imp.client_ua;;
+  }
+  dimension: imp_extra_received_at {
+    group_label: "Imp"
+    type: date
+    sql: ${TABLE}.imp_extra.received_at;;
+  }
+  dimension: imp_extra_handled_at {
+    group_label: "Imp"
+    type: date
+    sql: ${TABLE}.imp_extra.handled_at;;
+  }
+  dimension: imp_extra_happened_at {
+    group_label: "Imp"
+    type: date
+    sql: ${TABLE}.imp_extra.happened_at;;
+  }
+  dimension: imp_extra_client_ip {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.imp_extra.client_ip;;
+  }
+  dimension: imp_extra_event_type {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.imp_extra.event_type;;
+  }
+  dimension: imp_extra_client_ua {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.imp_extra.client_ua;;
+  }
+
+#=================== Request ===================
+  dimension: req_timestamp {
+    group_label: "Request"
+    type: date
+    sql: ${TABLE}.req.timestamp;;
+  }
+  dimension: req_exchange {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.exchange;;
+  }
+  dimension: req_bid_region {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.bid_region;;
+  }
+  dimension: req_bid_id {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.bid_id;;
+  }
+  dimension: req_app_bundle {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.app.bundle;;
+  }
+  dimension: req_app_encoded_bundle {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.app.encoded_bundle;;
+  }
+  dimension: req_app_publisher {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.app.publisher;;
+  }
+  dimension: req_app_publisher_id {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.app.publisher.id;;
+  }
+  dimension: req_app_publisher_name {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.app.publisher.name;;
+  }
+  dimension: req_site_id {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.site.id;;
+  }
+  dimension: req_site_domain {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.site.domain ;;
+  }
+  dimension: req_site_page {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.site.page ;;
+  }
+  dimension: is_web {
+    group_label: "Request"
+    type: yesno
+    sql: If(${TABLE}.req.site.page is Null, False, True) ;;
+  }
+  dimension: req_site_publisher_id {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.site.publisher.id;;
+  }
+  dimension: req_site_publisher_name {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.site.publisher.name;;
+  }
+  dimension: req_device_ifa {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.ifa;;
+  }
+  dimension: req_device_os {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.os;;
+  }
+  dimension: req_device_osv {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.osv;;
+  }
+  dimension: req_device_carrier {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.carrier;;
+  }
+  dimension: req_device_connectiontype {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.connectiontype;;
+  }
+  dimension: req_device_hwv {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.hwv;;
+  }
+  dimension: req_device_make {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.make;;
+  }
+  dimension: req_device_model {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.model;;
+  }
+  dimension: req_device_devicetype {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.devicetype;;
+  }
+  dimension: req_device_LANGUAGE {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.LANGUAGE;;
+  }
+  dimension: req_device_ip {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.ip;;
+  }
+  dimension: req_device_iptype {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.iptype;;
+  }
+  dimension: req_device_geo_utcoffset {
+    group_label: "Request"
+    type: number
+    sql: ${TABLE}.req.device.geo.utcoffset;;
+  }
+  dimension: req_device_geo_region {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.geo.region;;
+  }
+  dimension: req_device_geo_country {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.geo.country;;
+  }
+  dimension: req_device_geo_city {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.geo.city;;
+  }
+  dimension: req_device_geo_zip {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.geo.zip;;
+  }
+  dimension: req_device_geo_metro {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.device.geo.metro;;
+  }
+  dimension: req_device_lmt {
+    group_label: "Request"
+    type: yesno
+    sql: ${TABLE}.req.device.lmt;;
+  }
+  dimension: req_imp_bidfloor_currency {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.req.imp.bidfloor.currency;;
+  }
+  measure: req_imp_bidfloor_amount_micro {
+    group_label: "Imp"
+    type: sum
+    sql: ${TABLE}.req.imp.bidfloor.amount_micro;;
+  }
+  dimension: req_imp_tagid {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.req.imp.tagid;;
+  }
+  dimension: req_imp_instl {
+    group_label: "Imp"
+    type: yesno
+    sql: ${TABLE}.req.imp.instl;;
+  }
+  dimension: req_imp_banner_w {
+    group_label: "Imp"
+    type: number
+    sql: ${TABLE}.req.imp.banner.w;;
+  }
+  dimension: req_imp_banner_h {
+    group_label: "Imp"
+    type: number
+    sql: ${TABLE}.req.imp.banner.h;;
+  }
+  dimension: req_imp_video_w {
+    group_label: "Imp"
+    type: number
+    sql: ${TABLE}.req.imp.video.w;;
+  }
+  dimension: req_imp_video_h {
+    group_label: "Imp"
+    type: number
+    sql: ${TABLE}.req.imp.video.h;;
+  }
+  dimension: req_imp_video_maxduration_sec {
+    group_label: "Imp"
+    type: number
+    sql: ${TABLE}.req.imp.video.maxduration_sec;;
+  }
+  dimension: req_imp_video_minduration_sec {
+    group_label: "Imp"
+    type: number
+    sql: ${TABLE}.req.imp.video.minduration_sec;;
+  }
+  dimension: req_imp_video_skip {
+    group_label: "Imp"
+    type: yesno
+    sql: ${TABLE}.req.imp.video.skip;;
+  }
+  dimension: req_imp_video_skipafter {
+    group_label: "Imp"
+    type: number
+    sql: ${TABLE}.req.imp.video.skipafter;;
+  }
+  dimension: req_imp_video_ext_rewarded {
+    group_label: "Imp"
+    type: yesno
+    sql: ${TABLE}.req.imp.video.ext_rewarded;;
+  }
+  dimension: req_imp_video_placement {
+    group_label: "Imp"
+    type: number
+    sql: ${TABLE}.req.imp.video.placement;;
+  }
+  dimension: req_imp_native_ext_has_image {
+    group_label: "Imp"
+    type: yesno
+    sql: ${TABLE}.req.imp.native.ext_has_image;;
+  }
+  dimension: req_imp_native_ext_has_video {
+    group_label: "Imp"
+    type: yesno
+    sql: ${TABLE}.req.imp.native.ext_has_video;;
+  }
+  dimension: req_imp_inventory_format {
+    group_label: "Imp"
+    type: string
+    sql: ${TABLE}.req.imp.inventory_format;;
+  }
+  dimension: req_ext_skadn_version {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.ext.skadn.version;;
+  }
+  dimension: req_ext_skadn_ifv {
+    group_label: "Request"
+    type: string
+    sql: ${TABLE}.req.ext.skadn.ifv;;
+  }
+
+#=================== CV ===================
+  dimension: cv_received_at {
+    group_label: "CV"
+    type: date
+    sql: ${TABLE}.cv.received_at;;
+  }
+  dimension: cv_handled_at {
+    group_label: "CV"
+    type: date
+    sql: ${TABLE}.cv.handled_at;;
+  }
+  dimension: cv_happened_at {
+    group_label: "CV"
+    type: date
+    sql: ${TABLE}.cv.happened_at;;
+  }
+  dimension: cv_client_ip {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.client_ip;;
+  }
+  dimension: cv_client_ip_isv4 {
+    group_label: "CV"
+    type: yesno
+    sql: LENGTH(NET.SAFE_IP_FROM_STRING(${TABLE}.cv.client_ip)) = 4;;
+  }
+  dimension: cv_client_ip_isv6 {
+    group_label: "CV"
+    type: yesno
+    sql: LENGTH(NET.SAFE_IP_FROM_STRING(${TABLE}.cv.client_ip)) = 16;;
+  }
+  dimension: cv_event {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.event;;
+  }
+  dimension: cv_event_pb {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.event_pb;;
+  }
+  dimension: cv_view_through {
+    group_label: "CV"
+    type: yesno
+    sql: ${TABLE}.cv.view_through;;
+  }
+  dimension: cv_mmp {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.mmp;;
+  }
+  dimension: cv_revenue_raw_currency {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.revenue_raw.currency;;
+  }
+  measure: cv_revenue_raw_amount {
+    group_label: "CV"
+    type: sum
+    sql: ${TABLE}.cv.revenue_raw.amount;;
+  }
+  dimension: cv_revenue_usd_currency {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.revenue_usd.currency;;
+  }
+  dimension: cv_revenue_adv_currency {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.revenue_adv.currency;;
+  }
+  measure: cv_revenue_usd_amount {
+    group_label: "CV"
+    type: sum
+    sql: ${TABLE}.cv.revenue_usd.amount;;
+  }
+  measure: cv_revenue_adv_amount {
+    group_label: "CV"
+    type: sum
+    sql: ${TABLE}.cv.revenue_adv.amount;;
+  }
+  dimension: cv_postback {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.postback;;
+  }
+  dimension: match_type_pb {
+    group_label: "CV"
+    type: string
+    sql: CASE
+        WHEN cv.mmp = "KOCHAVA" THEN REGEXP_EXTRACT(${cv_postback}, r'&matched_by=([a-zA-Z_]*)')
+        WHEN cv.mmp = "ADBRIX_V2" THEN REGEXP_EXTRACT(${cv_postback}, r'&measurement_type=([a-zA-Z_]*)')
+        WHEN cv.mmp <> "BRANCH" THEN REGEXP_EXTRACT(${cv_postback}, r'&match_type=([a-zA-Z_]*)')
+        ELSE "unknown" END ;;
+  }
+  dimension: cv_client_ua {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.client_ua;;
+  }
+  dimension: cv_ifa_p {
+    group_label: "CV"
+    type: string
+    sql: ${TABLE}.cv.ifa_p;;
+  }
+
+#=================== pb ===================
+  dimension: pb_bundle_id {
+    group_label: "PB"
+    type: string
+    sql: ${TABLE}.cv.pb.app.bundle;;
+  }
+
+  dimension: utc_date {
+    group_label: "Timeframe"
+    label: "UTC Date"
+    type: date
+    sql: ${TABLE}.timestamp ;;
+    html: {{ rendered_value | date: "%y %b %d" }};;
+  }
+
+
+#=================== Measure ===================
+
+  measure: install {
+    type: count_distinct
+    sql: CASE WHEN ${cv_event} = "INSTALL" THEN ${TABLE}.bid.mtid END ;;
+  }
+
+  measure: mtid_count {
+    label: "MTID Distinct Count"
+    type: count_distinct
+    sql: ${TABLE}.bid.mtid;;
+  }
+
+  measure: mtid__count {
+    label: "MTID Count"
+    type: count
+    sql: ${TABLE}.bid.mtid;;
+  }
+
+  measure: count {
+    type: count
+  }
+  measure: revenue_per_install {
+    type: number
+    value_format: "$0.00"
+    sql: SAFE_DIVIDE( ${cv_revenue_usd_amount},${install}) ;;
+  }
+
+  measure: registration {
+    type: count_distinct
+    sql: CASE WHEN LOWER(${TABLE}.cv.event_pb) LIKE '%register%' OR LOWER(${TABLE}.cv.event_pb) LIKE '%registration%' THEN ${TABLE}.bid.mtid END ;;
+  }
+  measure: rejected_install {
+    type: count_distinct
+    sql: CASE WHEN REGEXP_CONTAINS(${cv_event_pb}, "rejected_inst|rejected_install") THEN ${TABLE}.bid.mtid END ;;
+  }
+
+  measure: registration_rate {
+    type: number
+    value_format: "0.00%"
+    sql: SAFE_DIVIDE( ${registration},${install}) ;;
+  }
+
+  measure: rejected_install_rate {
+    type: number
+    value_format: "0.00%"
+    sql: SAFE_DIVIDE(${rejected_install},${install}) ;;
+  }
+
+ }
